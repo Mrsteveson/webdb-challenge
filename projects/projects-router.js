@@ -85,7 +85,7 @@ router.delete('/:id', (req, res) => {
     })
 });
 
-// Update Project. **Postman Tested: **
+// Update Project. **Postman Tested: Working**
 router.put('/:id', (req, res) => {
     const id = req.params.id;
     const changes = req.body;
