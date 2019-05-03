@@ -4,7 +4,8 @@ module.exports = {
     getActions,
     getById,
     addAction,
-
+    destroyAct, 
+    updateAct
 };
 
 function getActions() {
@@ -25,6 +26,32 @@ function addAction(action) {
     .then(id => {
         return getById(id[0])
     })
+};
+
+function destroyAct(id) {
+    return db('actions')
+    .where({ id })
+    .first()
+    .del()
+}
+
+function getUpdateAction(id) {
+    return db('actions')
+    .where({ id })
+    .first()
+}
+
+function updateAct(id, changes) {
+    return db('actions')
+    .where({ id })
+    .update(changes)
+    .then(count => {
+        if(count > 0) {
+            return getUpdateAction(id)
+        } else {
+            return null
+        }
+    });
 };
 
 // Changing boolean from 0/1 to true/false. WORKS PRAISETHESUN

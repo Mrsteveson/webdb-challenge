@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-// Add Project. **Postman Tested: Working**
+// Add Action. **Postman Tested: Working**
 router.post('/', (req, res) => {
     const newAction = req.body;
 
@@ -44,6 +44,41 @@ router.post('/', (req, res) => {
             res.status(500).json(err.message)
         })
     }
+});
+
+// Delete Action. **Postman Tested: Working**
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    
+    db.destroyAct(id)
+    .then(count => {
+        if(count > 0) {
+            res.status(200).json({ message: `${count} action successfully deleted.`})
+        } else {
+            res.status(404).json({ message: 'The specified action does not exist.'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err.message)
+    })
+});
+
+// Update Action. **Postman Tested: Working**
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+
+    db.updateAct(id, changes)
+    .then(changes => {
+        if(changes) {
+            res.status(200).json({ message: 'The action has been successfully updated.'})
+        } else {
+            res.status(404).json({ message: 'The specified action does not exist.'})
+        }
+    })
+    .catch(err => [
+        res.status(500).json(err.message)
+    ])
 });
 
 
