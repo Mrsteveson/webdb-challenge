@@ -35,19 +35,13 @@ function destroyAct(id) {
     .del()
 }
 
-function getUpdateAction(id) {
-    return db('actions')
-    .where({ id })
-    .first()
-}
-
 function updateAct(id, changes) {
     return db('actions')
     .where({ id })
     .update(changes)
     .then(count => {
         if(count > 0) {
-            return getUpdateAction(id)
+            return getById(id)
         } else {
             return null
         }
