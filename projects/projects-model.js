@@ -5,7 +5,8 @@ module.exports = {
     getById,
     getProjectWithActions,
     addProject,
-
+    destroyProj,
+    updateProj
 };
 
 function getProjects() {
@@ -39,6 +40,26 @@ function addProject(project) {
         return getById(id[0])
     })
 }
+
+function destroyProj(id) {
+    return db('projects')
+    .where({ id })
+    .first()
+    .del()
+}
+
+function updateProj(id, changes) {
+    return db('projects')
+    .where({ id })
+    .update(changes)
+    .then(count => {
+        if(count > 0) {
+            return getById(id)
+        } else {
+            return null
+        }
+    })
+};
 
 // Changing boolean from 0/1 to true/false. WORKS PRAISETHESUN
 function changeBoolean(obj) {

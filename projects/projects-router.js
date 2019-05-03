@@ -68,5 +68,40 @@ router.post('/', (req, res) => {
     }  
 });
 
+// Delete Project. **Postman Tested: Working**
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.destroyProj(id)
+    .then(count => {
+        if(count > 0) {
+            res.status(200).json({ message: `${count} project successfully deleted.`})
+        } else {
+            res.status(404).json({ message: 'The specified project does not exist.'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err.message)
+    })
+});
+
+// Update Project. **Postman Tested: **
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+
+    db.updateProj(id, changes)
+    .then(changes => {
+        if(changes) {
+            res.status(200).json({ message: 'The project has been successfully updated.'})
+        } else {
+            res.status(404).json({ message: 'The specified project does not exist.'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err.message)
+    })
+});
+
 
 module.exports = router;
