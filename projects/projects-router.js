@@ -29,14 +29,19 @@ router.get('/:id', (req, res) => {
     })
 });
 
-// Get a project by ID, with its actions. **Postman Tested: NOT CURRENTLY WORKING**
-router.get('/:id', (req, res) => {
+// Get a project by ID, with its actions. **Postman Tested: Working**
+router.get('/:id/actions', (req, res) => {
     const id = req.params.id;
 
-    db.getProjectWithActions(id)
+    db.getById(id)
     .then(project => {
         if(project) {
-            res.status(200).json(project)
+            const pActions = {...project};
+            db.getProjectWithActions(id)
+            .then(actions => {
+                pActions.actions = actions;
+                res.status(200).json(pActions)
+            })
         } else {
             res.status(400).json({ message: 'The specified project does not exist.'})
         }
